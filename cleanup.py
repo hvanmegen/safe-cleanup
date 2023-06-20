@@ -10,6 +10,19 @@ except ImportError:
     print("tqdm module not found. Please install it using 'pip install tqdm'")
     sys.exit(1)
 
+def numerize(n):
+    if isinstance(n, int):
+        return '{:,}'.format(n)
+    elif isinstance(n, float):
+        return '{:,.2f}'.format(n)
+    else:
+        return str(n)
+
+try:
+    from numerize import numerize
+except ImportError:
+    pass
+
 MAX_ERRORS = 3
 MAX_WAIT_TIME = 30
 
@@ -21,7 +34,7 @@ def main(args):
 
     total_start_time = time.time()
 
-    print(f"Scanning {dir_path} and compiling list of {num_items} items to delete.")
+    print(f"Scanning {dir_path} and compiling list of {numerize(num_items)} items to delete.")
 
     for root, _, files in os.walk(dir_path):
         for f in files:
@@ -32,7 +45,7 @@ def main(args):
             continue
         break
 
-    print(f"List of {num_items} items compiled. Proceding with deletion.")
+    print(f"List of {numerize(num_items)} items compiled. Proceding with deletion.")
 
     with tqdm(total=num_items, disable=not verbose) as pbar:
         start_time = time.time()
@@ -58,8 +71,7 @@ def main(args):
                 time.sleep(wait_time * (2 ** (error_count - 1)))
                 pbar.refresh()
 
-    print(f"Deleted {num_items} items in {time.time() - total_start_time:.2f} seconds at {num_items / (
-time.time() - total_start_time):.2f} it/s.")
+    print(f"Deleted {numerize(num_items)} items in {time.time() - total_start_time:.2f} seconds at {num_items / (time.time() - total_start_time):.2f} it/s.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="A script to delete a limited number of files and directories from a given directory. It accepts a directory path, number of items to delete, and an optional verbose flag (-v) for detailed output.")
