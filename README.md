@@ -16,37 +16,39 @@ It's originally created for (and especially useful on) very large and possibly s
 ## Requirements
 
 - Python 3.x
-- Python 'tqdm' module
+- Python 'tqdm' module (used for the process bar handling)
+- Python 'numerize' module for advanced number formatting (optional, will fallback to simple comma usage for numbers above 999 such as 1,000,000.
 
 ## Installation
 
 1. Ensure you have Python 3.x installed on your system. You can check this by running `python --version` or `python3 --version`.
 2. Install the `tqdm` module using pip:
-
 ```
 pip install tqdm
+```
+
+3. Optionally, you can install the `numerize` module using pip:
+```
+pip install numerize
 ```
 
 ## Usage
 
 Run the script from the command line with the following syntax:
-
 ```
 python cleanup.py [-v] <directory> <number_of_items>
 ```
-
 - `-v` or `--verbose`: (Optional) Enable verbose mode for detailed output.
 - `<directory>`: The directory path from which you want to delete files and directories.
 - `<number_of_items>`: The number of files and directories to delete.
 
-
 Example:
 
 ```
-python cleanup.py -v /path/to/directory 10000
+python cleanup.py -v /path/to/directory 100000
 ```
 
-This command will delete 10000 files/directories from `/path/to/directory` and display detailed output with a progress bar.
+This command will delete 100000 files/directories from `/path/to/directory` and display detailed output with a progress bar.
 
 ## Contributing
 
