@@ -2,6 +2,8 @@
 
 This Python script helps you delete a limited number of files and directories from a specified directory. It is designed to handle various conditions such as slow file deletions and errors during the deletion process.
 
+It's originally created for (and especially useful on) very large and possibly slow filesystems such as CephFS.
+
 ## Features
 
 - Specify the directory and the number of files/directories to delete.
