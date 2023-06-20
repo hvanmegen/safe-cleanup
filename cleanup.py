@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import os
 import sys
 import time
@@ -18,6 +19,10 @@ def main(args):
     error_count = 0
     wait_time = 1
 
+    total_start_time = time.time()
+
+    print(f"Scanning {dir_path} and compiling list of {num_items} items to delete.")
+
     for root, _, files in os.walk(dir_path):
         for f in files:
             items.append(os.path.join(root, f))
@@ -27,7 +32,7 @@ def main(args):
             continue
         break
 
-    print(f"List of {num_items} items compiled.")
+    print(f"List of {num_items} items compiled. Proceding with deletion.")
 
     with tqdm(total=num_items, disable=not verbose) as pbar:
         start_time = time.time()
@@ -39,11 +44,11 @@ def main(args):
 
                 if deletion_time > wait_time:
                     wait_time *= 2 if wait_time < MAX_WAIT_TIME // 2 else MAX_WAIT_TIME
+                    time.sleep(wait_time)
                     if wait_time >= MAX_WAIT_TIME:
                         print(f"File deletion exceeded {MAX_WAIT_TIME}s. Exiting.")
                         sys.exit(1)
 
-                time.sleep(wait_time)
                 pbar.update(1)
             except Exception as e:
                 error_count += 1
@@ -53,7 +58,8 @@ def main(args):
                 time.sleep(wait_time * (2 ** (error_count - 1)))
                 pbar.refresh()
 
-    print(f"Deleted {num_items} items. Took {time.time() - start_time:.2f} seconds.")
+    print(f"Deleted {num_items} items in {time.time() - total_start_time:.2f} seconds at {num_items / (
+time.time() - total_start_time):.2f} it/s.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="A script to delete a limited number of files and directories from a given directory. It accepts a directory path, number of items to delete, and an optional verbose flag (-v) for detailed output.")
